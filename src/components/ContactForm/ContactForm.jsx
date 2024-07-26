@@ -1,6 +1,4 @@
-// import React from "react";
 import { Field, Form, Formik } from "formik";
-import { nanoid } from "nanoid";
 import * as Yup from "yup";
 import css from "./ContactForm.module.css";
 
@@ -10,9 +8,7 @@ const ContactForm = ({ onSubmit }) => {
       .min(3, "Too Short!")
       .max(50, "Too Long!")
       .required("enter your name"),
-    number: Yup.string()
-      .matches(/^[0-9]{10}$/, "Enter a valid 10-digit number without space")
-      .required("Enter 10 numbers"),
+    number: Yup.string().min(10, "Too Short!").required("enter 10 numbers"),
   });
 
   return (
@@ -20,11 +16,7 @@ const ContactForm = ({ onSubmit }) => {
       initialValues={{ name: "", number: "" }}
       validationSchema={FeedbackSchema}
       onSubmit={(values, { resetForm }) => {
-        onSubmit({
-          id: nanoid(),
-          name: values.name,
-          number: values.number,
-        });
+        onSubmit(values);
         resetForm();
       }}
     >
